@@ -1,11 +1,15 @@
-import { questions } from "./questions";  //the array containing all questions and answers
+import { questions } from "./questions.js";  //the array containing all questions and answers
 
 var time = 60;
+var questionIndex = 0;
 var startScreen = document.querySelector("#start-screen"); 
-var questionsScreen = document.querySelector("questions");
-var feedbackScreen = document.querySelector("feedback");
-var endScreen = document.querySelector("end-screen");
+var questionsScreen = document.querySelector("#questions");
+var feedbackScreen = document.querySelector("#feedback");
+var endScreen = document.querySelector("#end-screen");
 
+var startButton = document.querySelector("#start");
+var questionTitle = document.querySelector("#question-title");
+var choicesColumn = document.querySelector("#choices");
 
 function timer() {
     if (time <= 0){
@@ -16,13 +20,21 @@ function timer() {
     var timeDisplay = document.querySelector("#time");
     timeDisplay.textContent = time; // update the time with the new time
 }
+// q: question
+// a: array of 4 answers
+// aIndex: the index of the correct answer
 
 function displayQuestion(questions){
-    
+    //update #question-title with the question
+    console.log("Result at index: " + questionIndex + "is : " + questions[questionIndex]);
+    questionTitle.textContent = questions[questionIndex].q
+    //create a button
+    //update the text to an answer option
+    //append to child of #choices
 }
 
 // when start button is clicked 
-var startButton = document.querySelector("#start");
+
 startButton.addEventListener("click", function(event){
     event.preventDefault();
 
@@ -33,10 +45,10 @@ startButton.addEventListener("click", function(event){
     startScreen.setAttribute("class", "start hide");
     // change the div called "questions" class to "" so its in view
     questionsScreen.setAttribute("class", "show");
+    // load the first question
+    displayQuestion(questions);
 })
-// start timer countdown from 60 seconds
-// change the div called "start-screen" class to "start hide"
-// change the div called "questions" class to "" so its in view
+
 
 
 // iterate over the list of questions
