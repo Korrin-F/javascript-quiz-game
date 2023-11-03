@@ -1,5 +1,5 @@
 // create an array of objects to store each question and answer data
-var questions = [
+const questions = [
      {
         q: "Which operator is used for strict equality comparison in JavaScript?",
         a: ["==","===","=","!="],
@@ -25,4 +25,7 @@ var questions = [
         a: ["write()","print()","log()","display()"],
         aIndex: 2
     }
-]
+];
+
+export {questions};
+

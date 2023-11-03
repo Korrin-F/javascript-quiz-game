@@ -15,6 +15,8 @@
     <div class="timer">Time: <span id="time">0</span></div>
 
     <div class="wrapper">
+
+      <!-- START SCREEN -->
       <div id="start-screen" class="start">
         <h1>Coding Quiz Challenge</h1>
         <p>
@@ -25,11 +27,16 @@
         <button id="start">Start Quiz</button>
       </div>
 
+      <!-- QUESTIONS SCREEN -->
       <div id="questions" class="hide">
         <h2 id="question-title"></h2>
         <div id="choices" class="choices"></div>
       </div>
 
+      <!-- FEEDBACK SCREEN -->
+      <div id="feedback" class="feedback hide"></div>
+
+      <!-- END SCREEN -->
       <div id="end-screen" class="hide">
         <h2>All done!</h2>
         <p>Your final score is <span id="final-score"></span>.</p>
@@ -39,10 +46,10 @@
         </p>
       </div>
 
-      <div id="feedback" class="feedback hide"></div>
+
     </div>
 
-    <script src="./assets/js/questions.js"></script>
-    <script src="./assets/js/logic.js"></script>
+    <script src="./assets/js/questions.js" type="module"></script>
+    <script src="./assets/js/logic.js" type="module"></script>
   </body>
 </html>
