@@ -2,6 +2,7 @@ import { questions } from "./questions.js";  //the array containing all question
 
 var time = 60;
 var questionIndex = 0;
+var feedbackTime = 0;
 
 var startScreen = document.querySelector("#start-screen"); 
 var questionsScreen = document.querySelector("#questions");
@@ -67,7 +68,23 @@ startButton.addEventListener("click", function(event){
     questionIndex++;
 })
 
-
+function displayFeedback(feedback){
+    //for two seconds show the feedback Correct! or Wrong!
+    feedbackScreen.textContent = feedback;
+    feedbackTime = 1000;
+    let feedbackTimer = setInterval(function(){
+        if (feedbackTime >= 2000){
+            //stop the timer
+            clearInterval(feedbackTimer);
+            feedbackScreen.setAttribute("class", "feedback hide");
+        }
+        feedbackTime += 1000;
+        console.log("feedback Time is now: "+ feedbackTime);
+    }, 1000)
+    //show the feedback screen
+    feedbackScreen.setAttribute("class", "feedback");
+    
+}
 
 choicesColumn.addEventListener("click", function(event){
     event.preventDefault();
@@ -80,14 +97,18 @@ choicesColumn.addEventListener("click", function(event){
     // if the element is a button then grab the data-index value
     let dataIndex = element.getAttribute("data-index");
     // compare the data-index value to the correct answer value
-    if(dataIndex === questions[questionIndex].aIndex){
+    console.log("data index: "+ dataIndex);
+    console.log("correct answer index : "+ questions[questionIndex].aIndex);
+    if(Number(dataIndex) == questions[questionIndex].aIndex){
         //this answer is correct 
         //display correct in the feedback section for 2 seconds
+        displayFeedback("Correct!");
         //display next question 
         //add one index to questionIndex
     }else{
         //this answer is incorrect
         //display incorrect in the feedback section for 2 seconds
+        displayFeedback("Wrong!");
         //remove 10 seconds from the timer
         //display next question 
         //add one index to questionIndex
