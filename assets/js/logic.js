@@ -58,7 +58,6 @@ startButton.addEventListener("click", function(event){
 
     // start timer countdown from 60 seconds
     setInterval(timer, 1000);
-
     // change the div called "start-screen" class to "start hide"
     startScreen.setAttribute("class", "start hide");
     // change the div called "questions" class to "" so its in view
@@ -70,17 +69,32 @@ startButton.addEventListener("click", function(event){
 
 
 
-// iterate over the list of questions
+choicesColumn.addEventListener("click", function(event){
+    event.preventDefault();
+    let element = event.target;
+    console.log(element)
+    // if the clicked element is not a button then do nothing
+    if (element.tagName !== "BUTTON"){
+        return;
+    }
+    // if the element is a button then grab the data-index value
+    let dataIndex = element.getAttribute("data-index");
+    // compare the data-index value to the correct answer value
+    if(dataIndex === questions[questionIndex].aIndex){
+        //this answer is correct 
+        //display correct in the feedback section for 2 seconds
+        //display next question 
+        //add one index to questionIndex
+    }else{
+        //this answer is incorrect
+        //display incorrect in the feedback section for 2 seconds
+        //remove 10 seconds from the timer
+        //display next question 
+        //add one index to questionIndex
+    }
+})
 
-    // update the "question-title" h2 text content to the question
-    // create a button per question with the text content displayed
-    // save the question index to data-index
-    // and append the button to the div with id "choices"
-    
 
-    // if a user clicked on an answer
-    // check the text of the answer (or maybe some data property)
-    // compare that value to the correct answer
 
     // if (the thing the user answered is correct)
     //    display correct! in the feedback screen
