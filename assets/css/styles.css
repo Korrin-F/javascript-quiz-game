@@ -44,12 +44,17 @@ ol {
   overflow: auto;
 }
 
-li {
+/* li {
   padding: 5px;
+  list-style: decimal inside none;
+} */
+.choices li {
+  color: white;
   list-style: decimal inside none;
 }
 
-li:nth-child(odd) {
+#high-scores li:nth-child(odd) {
+  padding: 5px;
   background-color: #f3edfc;
 }
 

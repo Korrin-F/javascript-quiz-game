@@ -2,6 +2,7 @@ import { questions } from "./questions.js";  //the array containing all question
 
 var time = 60;
 var questionIndex = 0;
+
 var startScreen = document.querySelector("#start-screen"); 
 var questionsScreen = document.querySelector("#questions");
 var feedbackScreen = document.querySelector("#feedback");
@@ -26,11 +27,28 @@ function timer() {
 
 function displayQuestion(questions){
     //update #question-title with the question
-    console.log("Result at index: " + questionIndex + "is : " + questions[questionIndex]);
+    console.log("Result at index: " + questionIndex + "is: " + questions[questionIndex]);
     questionTitle.textContent = questions[questionIndex].q
-    //create a button
-    //update the text to an answer option
-    //append to child of #choices
+    // create an ordered list element
+    let ol = document.createElement("ol");
+    choicesColumn.appendChild(ol);
+    let answerIndex = 0;
+
+    for(var answer of questions[questionIndex].a){
+        let li = document.createElement("li");
+        ol.appendChild(li);
+        //create a button
+        let button = document.createElement("button");
+        //update the text to an answer option
+        button.textContent = answer;
+        //update the data-index attribute to the current index of the answer
+        button.setAttribute("data-index", answerIndex);
+        //append to child of #choices
+        li.appendChild(button);
+        //increase the answer index by 1
+        answerIndex++;
+    }
+    
 }
 
 // when start button is clicked 
@@ -47,6 +65,7 @@ startButton.addEventListener("click", function(event){
     questionsScreen.setAttribute("class", "show");
     // load the first question
     displayQuestion(questions);
+    questionIndex++;
 })
 
 
