@@ -1,8 +1,9 @@
 import { questions } from "./questions.js";  //the array containing all questions and answers
 
-var time = 10;
-var questionIndex = 0;
+var time = 60;
+var nextQuestionIndex = 0;
 var feedbackTime = 0;
+var score = 0;
 
 var startScreen = document.querySelector("#start-screen"); 
 var questionsScreen = document.querySelector("#questions");
@@ -31,8 +32,8 @@ function timer() {
 
 function displayQuestion(questions){
     //update #question-title with the question
-    // console.log("Result at index: " + questionIndex + "is: " + questions[questionIndex]);
-    questionTitle.textContent = questions[questionIndex].q
+    // console.log("Result at index: " + nextQuestionIndex + "is: " + questions[nextQuestionIndex]);
+    questionTitle.textContent = questions[nextQuestionIndex].q
     //clear previous choices
     choicesColumn.innerHTML = "";
     // create an ordered list element
@@ -40,7 +41,7 @@ function displayQuestion(questions){
     choicesColumn.appendChild(ol);
     let answerIndex = 0;
 
-    for(var answer of questions[questionIndex].a){
+    for(var answer of questions[nextQuestionIndex].a){
         let li = document.createElement("li");
         ol.appendChild(li);
         //create a button
@@ -54,7 +55,7 @@ function displayQuestion(questions){
         //increase the answer index by 1
         answerIndex++;
     }
-    
+    nextQuestionIndex++;
 }
 
 // when start button is clicked 
@@ -69,7 +70,8 @@ startButton.addEventListener("click", function(event){
     questionsScreen.setAttribute("class", "show");
     // load the first question
     displayQuestion(questions);
-    questionIndex++;
+    console.log("Question index: "+nextQuestionIndex);
+    
 })
 
 function displayFeedback(feedback){
@@ -96,6 +98,9 @@ function displayEndScreen(){
     //
     //unhide end screen
     endScreen.setAttribute("class", "");
+    //show the final score in final-score span
+    let finalScoreDisplay = document.querySelector("#final-score");
+    finalScoreDisplay.textContent = score;
 }
 
 choicesColumn.addEventListener("click", function(event){
@@ -106,29 +111,46 @@ choicesColumn.addEventListener("click", function(event){
     if (element.tagName !== "BUTTON"){
         return;
     }
+    
     // if the element is a button then grab the data-index value
     let dataIndex = element.getAttribute("data-index");
+    console.log("Question index: "+nextQuestionIndex);
+    console.log("Button index: "+dataIndex);
+    console.log("Answer index: "+questions[nextQuestionIndex-1].aIndex);
     // compare the data-index value to the correct answer value
     // console.log("data index: "+ dataIndex);
-    // console.log("correct answer index : "+ questions[questionIndex].aIndex);
-    if(Number(dataIndex) == questions[questionIndex].aIndex){
+    // console.log("correct answer index : "+ questions[nextQuestionIndex].aIndex);
+    //if the button pressed matches the answer index value
+    if(Number(dataIndex) == questions[nextQuestionIndex-1].aIndex){
         //this answer is correct 
+        // add 7 points to the total
+        score+=7;
+        // console.log("score is now: "+score);
         //display correct in the feedback section for 2 seconds
         displayFeedback("Correct!");
     }else{
         //this answer is incorrect
+        //subtract 3 points from the total score
+        score-=3;
+        // console.log("score is now: "+score);
+
         //display incorrect in the feedback section for 2 seconds
         displayFeedback("Wrong!");
         //remove 10 seconds from the timer
         time = time - 10;
     }
+    
+     //add one index to nextQuestionIndex
+    // console.log("Questions array length: "+questions.length);
+    //if all questions have been answered
+    if(nextQuestionIndex>=questions.length){
+        displayEndScreen();
+        return;
+    }
     //display next question 
     displayQuestion(questions);
-     //add one index to questionIndex
-    questionIndex++;
-    if(questionIndex>=questions.length){
-        displayEndScreen();
-    }
+    // nextQuestionIndex++;
+    // console.log("Next index is now: "+ nextQuestionIndex);
 })
 
 
