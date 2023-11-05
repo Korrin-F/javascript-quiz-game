@@ -14,7 +14,11 @@ var startButton = document.querySelector("#start");
 var questionTitle = document.querySelector("#question-title");
 var choicesColumn = document.querySelector("#choices");
 var timeDisplay = document.querySelector("#time");
+var initials = document.querySelector("#initials");
+var submit = document.querySelector("#submit");
+var submitWarning = document.querySelector("#submit-warning");
 
+//countdown timer
 function timer() {
     if (time <= 0){
         // clearInterval(timer);
@@ -23,7 +27,6 @@ function timer() {
         return;
     }
     time--; //subtract one second
-    
     timeDisplay.textContent = time; // update the time with the new time
 }
 // q: question
@@ -32,7 +35,6 @@ function timer() {
 
 function displayQuestion(questions){
     //update #question-title with the question
-    // console.log("Result at index: " + nextQuestionIndex + "is: " + questions[nextQuestionIndex]);
     questionTitle.textContent = questions[nextQuestionIndex].q
     //clear previous choices
     choicesColumn.innerHTML = "";
@@ -40,7 +42,7 @@ function displayQuestion(questions){
     let ol = document.createElement("ol");
     choicesColumn.appendChild(ol);
     let answerIndex = 0;
-
+    //create a button for every answer option
     for(var answer of questions[nextQuestionIndex].a){
         let li = document.createElement("li");
         ol.appendChild(li);
@@ -61,7 +63,6 @@ function displayQuestion(questions){
 // when start button is clicked 
 startButton.addEventListener("click", function(event){
     event.preventDefault();
-
     // start timer countdown from 60 seconds
     setInterval(timer, 1000);
     // change the div called "start-screen" class to "start hide"
@@ -106,7 +107,7 @@ function displayEndScreen(){
 choicesColumn.addEventListener("click", function(event){
     event.preventDefault();
     let element = event.target;
-    // console.log(element)
+
     // if the clicked element is not a button then do nothing
     if (element.tagName !== "BUTTON"){
         return;
@@ -114,12 +115,7 @@ choicesColumn.addEventListener("click", function(event){
     
     // if the element is a button then grab the data-index value
     let dataIndex = element.getAttribute("data-index");
-    console.log("Question index: "+nextQuestionIndex);
-    console.log("Button index: "+dataIndex);
-    console.log("Answer index: "+questions[nextQuestionIndex-1].aIndex);
-    // compare the data-index value to the correct answer value
-    // console.log("data index: "+ dataIndex);
-    // console.log("correct answer index : "+ questions[nextQuestionIndex].aIndex);
+
     //if the button pressed matches the answer index value
     if(Number(dataIndex) == questions[nextQuestionIndex-1].aIndex){
         //this answer is correct 
@@ -132,16 +128,13 @@ choicesColumn.addEventListener("click", function(event){
         //this answer is incorrect
         //subtract 3 points from the total score
         score-=3;
-        // console.log("score is now: "+score);
-
         //display incorrect in the feedback section for 2 seconds
         displayFeedback("Wrong!");
         //remove 10 seconds from the timer
         time = time - 10;
     }
     
-     //add one index to nextQuestionIndex
-    // console.log("Questions array length: "+questions.length);
+
     //if all questions have been answered
     if(nextQuestionIndex>=questions.length){
         displayEndScreen();
@@ -149,16 +142,45 @@ choicesColumn.addEventListener("click", function(event){
     }
     //display next question 
     displayQuestion(questions);
-    // nextQuestionIndex++;
-    // console.log("Next index is now: "+ nextQuestionIndex);
+
 })
 
+function saveScore(text,score){
+    //retrieve the highscores object and add a new high score to it
+    let highscores =  JSON.parse(localStorage.getItem("highscores"));
+    let newScore = {
+        i: text,
+        s: score
+    }
+    //if there are no saved highscores then create the space
+    if(highscores===null){
+        console.log("highscore is null");
+        let scoresArray = [];
+        scoresArray.push(newScore);
+        localStorage.setItem("highscores", JSON.stringify(scoresArray))
+        return;
+    }
+    console.log(highscores);
+    highscores.push(newScore);
+    localStorage.setItem("highscores", JSON.stringify(highscores))
+}
 
-
+//add the highscore to local storage when submit button is pressed
+submit.addEventListener("click", function(event){
+    //check if the text box actually has content
+    let text = initials.value;
+    if(text === ""){
+        //add a message that says "please enter your initials"
+        submitWarning.textContent = "Please enter your initials.";
+        return;
+    }
+    saveScore(text,score);
+    // go to the highscores page
+})
 
 
     //localStorage.setItem("testItem", "abcdefghijkl");
 
-
-    // change the div called "questions" class to "hide"
-    // change the div called "feedback" class to "feedback" so its in view
+    // localStorage.setItem("user", JSON.stringify(user));
+    
+    // var userParse = JSON.parse(lastUser);

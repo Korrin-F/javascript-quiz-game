@@ -91,3 +91,9 @@ ol {
   top: 10px;
   right: 10px;
 }
+
+.warning {
+  color: red;
+  font-style: italic;
+  font-size: medium;
+}
