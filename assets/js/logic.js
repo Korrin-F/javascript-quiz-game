@@ -1,6 +1,6 @@
 import { questions } from "./questions.js";  //the array containing all questions and answers
 
-var time = 60;
+var time = 10;
 var questionIndex = 0;
 var feedbackTime = 0;
 
@@ -17,6 +17,8 @@ var timeDisplay = document.querySelector("#time");
 function timer() {
     if (time <= 0){
         // clearInterval(timer);
+        displayEndScreen();
+        timeDisplay.textContent = 0;
         return;
     }
     time--; //subtract one second
@@ -29,7 +31,7 @@ function timer() {
 
 function displayQuestion(questions){
     //update #question-title with the question
-    console.log("Result at index: " + questionIndex + "is: " + questions[questionIndex]);
+    // console.log("Result at index: " + questionIndex + "is: " + questions[questionIndex]);
     questionTitle.textContent = questions[questionIndex].q
     //clear previous choices
     choicesColumn.innerHTML = "";
@@ -56,7 +58,6 @@ function displayQuestion(questions){
 }
 
 // when start button is clicked 
-
 startButton.addEventListener("click", function(event){
     event.preventDefault();
 
@@ -89,6 +90,14 @@ function displayFeedback(feedback){
     
 }
 
+function displayEndScreen(){
+    //hide questions screen 
+    questionsScreen.setAttribute("class", "hide");
+    //
+    //unhide end screen
+    endScreen.setAttribute("class", "");
+}
+
 choicesColumn.addEventListener("click", function(event){
     event.preventDefault();
     let element = event.target;
@@ -117,6 +126,9 @@ choicesColumn.addEventListener("click", function(event){
     displayQuestion(questions);
      //add one index to questionIndex
     questionIndex++;
+    if(questionIndex>=questions.length){
+        displayEndScreen();
+    }
 })
 
 
