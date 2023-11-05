@@ -12,6 +12,7 @@ var endScreen = document.querySelector("#end-screen");
 var startButton = document.querySelector("#start");
 var questionTitle = document.querySelector("#question-title");
 var choicesColumn = document.querySelector("#choices");
+var timeDisplay = document.querySelector("#time");
 
 function timer() {
     if (time <= 0){
@@ -19,7 +20,7 @@ function timer() {
         return;
     }
     time--; //subtract one second
-    var timeDisplay = document.querySelector("#time");
+    
     timeDisplay.textContent = time; // update the time with the new time
 }
 // q: question
@@ -30,6 +31,8 @@ function displayQuestion(questions){
     //update #question-title with the question
     console.log("Result at index: " + questionIndex + "is: " + questions[questionIndex]);
     questionTitle.textContent = questions[questionIndex].q
+    //clear previous choices
+    choicesColumn.innerHTML = "";
     // create an ordered list element
     let ol = document.createElement("ol");
     choicesColumn.appendChild(ol);
@@ -79,7 +82,7 @@ function displayFeedback(feedback){
             feedbackScreen.setAttribute("class", "feedback hide");
         }
         feedbackTime += 1000;
-        console.log("feedback Time is now: "+ feedbackTime);
+        // console.log("feedback Time is now: "+ feedbackTime);
     }, 1000)
     //show the feedback screen
     feedbackScreen.setAttribute("class", "feedback");
@@ -89,7 +92,7 @@ function displayFeedback(feedback){
 choicesColumn.addEventListener("click", function(event){
     event.preventDefault();
     let element = event.target;
-    console.log(element)
+    // console.log(element)
     // if the clicked element is not a button then do nothing
     if (element.tagName !== "BUTTON"){
         return;
@@ -97,33 +100,28 @@ choicesColumn.addEventListener("click", function(event){
     // if the element is a button then grab the data-index value
     let dataIndex = element.getAttribute("data-index");
     // compare the data-index value to the correct answer value
-    console.log("data index: "+ dataIndex);
-    console.log("correct answer index : "+ questions[questionIndex].aIndex);
+    // console.log("data index: "+ dataIndex);
+    // console.log("correct answer index : "+ questions[questionIndex].aIndex);
     if(Number(dataIndex) == questions[questionIndex].aIndex){
         //this answer is correct 
         //display correct in the feedback section for 2 seconds
         displayFeedback("Correct!");
-        //display next question 
-        //add one index to questionIndex
     }else{
         //this answer is incorrect
         //display incorrect in the feedback section for 2 seconds
         displayFeedback("Wrong!");
         //remove 10 seconds from the timer
-        //display next question 
-        //add one index to questionIndex
+        time = time - 10;
     }
+    //display next question 
+    displayQuestion(questions);
+     //add one index to questionIndex
+    questionIndex++;
 })
 
 
 
-    // if (the thing the user answered is correct)
-    //    display correct! in the feedback screen
-    // else
-    //    display incorrect in the feedback screen
-    //    subtract time by 10 seconds
 
-    //console.log(dansQuestions);
 
     //localStorage.setItem("testItem", "abcdefghijkl");
 
