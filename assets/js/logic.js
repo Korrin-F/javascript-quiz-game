@@ -1,9 +1,12 @@
 import { questions } from "./questions.js";  //the array containing all questions and answers
 
-var time = 60;
+var startTime = 60
+var time = startTime;
 var nextQuestionIndex = 0;
 var feedbackTime = 0;
 var score = 0;
+var gameEnd = false;
+var timer = ""; 
 
 var startScreen = document.querySelector("#start-screen"); 
 var questionsScreen = document.querySelector("#questions");
@@ -19,16 +22,34 @@ var submit = document.querySelector("#submit");
 var submitWarning = document.querySelector("#submit-warning");
 
 //countdown timer
-function timer() {
-    if (time <= 0){
-        // clearInterval(timer);
-        displayEndScreen();
-        timeDisplay.textContent = 0;
-        return;
-    }
-    time--; //subtract one second
-    timeDisplay.textContent = time; // update the time with the new time
+function startTimer(){
+    timer = setInterval(function(){
+        if (time <= 0){
+            clearInterval(timer);
+            gameEnd = true;
+            score = scoreMultiplier(time,score);
+            displayEndScreen();
+            timeDisplay.textContent = 0;
+            console.log("timer end function");
+            return;
+        }
+        time--; //subtract one second
+        timeDisplay.textContent = time; // update the time with the new time
+    }, 1000)
 }
+
+// function timer() {
+//     if (time <= 0){
+//         gameEnd = true;
+//         score = scoreMultiplier(time,score);
+//         displayEndScreen();
+//         timeDisplay.textContent = 0;
+//         clearInterval()
+//         return;
+//     }
+//     time--; 
+//     timeDisplay.textContent = time; 
+// }
 // q: question
 // a: array of 4 answers
 // aIndex: the index of the correct answer
@@ -64,7 +85,8 @@ function displayQuestion(questions){
 startButton.addEventListener("click", function(event){
     event.preventDefault();
     // start timer countdown from 60 seconds
-    setInterval(timer, 1000);
+    startTimer();
+    // setInterval(timer, 1000);
     // change the div called "start-screen" class to "start hide"
     startScreen.setAttribute("class", "start hide");
     // change the div called "questions" class to "" so its in view
@@ -137,7 +159,12 @@ choicesColumn.addEventListener("click", function(event){
 
     //if all questions have been answered
     if(nextQuestionIndex>=questions.length){
+        gameEnd = true;
+        score = scoreMultiplier(time,score);
+        clearInterval(timer);
+        timeDisplay.textContent = 0;
         displayEndScreen();
+        console.log("question end function");
         return;
     }
     //display next question 
@@ -145,22 +172,45 @@ choicesColumn.addEventListener("click", function(event){
 
 })
 
+function scoreMultiplier(time, score){
+    let newScore = 0;
+    console.log("Time: "+time);
+    console.log("Score: "+score);
+    //if score is less than zero then make it zero
+    if(score<0){
+        return 0;
+    }
+    //if time is between 100% & 75% then multiply by 75
+    if(time >= (startTime * 0.75)){
+        newScore = score * 75;
+    //if time is between 74% & 50% then multiply by 50
+    }else if (time >= (startTime * 0.5)){
+        newScore = score * 50;
+    //if time is between 49% & 25% then multiply by 25
+    }else if (time >= (startTime * 0.25)){
+        newScore = score * 25;
+    //if time is between 24% & 0 then do nothing
+    }else{
+        return score;
+    }
+    console.log("New Score: "+newScore);
+    return newScore;
+}
+
 function saveScore(text,score){
-    //retrieve the highscores object and add a new high score to it
+    //retrieve the highscores array and add a new high score to it
     let highscores =  JSON.parse(localStorage.getItem("highscores"));
     let newScore = {
         i: text,
         s: score
     }
-    //if there are no saved highscores then create the space
+    //if there are no saved highscores then create the first one
     if(highscores===null){
-        console.log("highscore is null");
         let scoresArray = [];
         scoresArray.push(newScore);
         localStorage.setItem("highscores", JSON.stringify(scoresArray))
         return;
     }
-    console.log(highscores);
     highscores.push(newScore);
     localStorage.setItem("highscores", JSON.stringify(highscores))
 }
