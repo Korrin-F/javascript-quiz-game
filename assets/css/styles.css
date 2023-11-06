@@ -53,8 +53,12 @@ ol {
   list-style: decimal inside none;
 }
 
-#high-scores li:nth-child(odd) {
+#highscores li {
   padding: 5px;
+  list-style: decimal inside none;
+}
+
+#highscores li:nth-child(odd) {
   background-color: #f3edfc;
 }
 

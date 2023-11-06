@@ -226,11 +226,7 @@ submit.addEventListener("click", function(event){
     }
     saveScore(text,score);
     // go to the highscores page
+    window.location.href = "highscores.html";
 })
 
 
-    //localStorage.setItem("testItem", "abcdefghijkl");
-
-    // localStorage.setItem("user", JSON.stringify(user));
-    
-    // var userParse = JSON.parse(lastUser);
