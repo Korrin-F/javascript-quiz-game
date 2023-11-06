@@ -2,7 +2,9 @@
 let orderedList = document.querySelector("#highscores");
 let clear = document.querySelector("#clear");
 
-
+//------------------------------------
+// DISPLAY SCORES TO SCREEN
+//------------------------------------
 
 //retrieve all the scores from local storage
 let highscores =  JSON.parse(localStorage.getItem("highscores"));
@@ -16,6 +18,10 @@ for(var object in highscores){
     li.textContent = initials + " - " + score;
     orderedList.appendChild(li);
 }
+
+//------------------------------------
+// DELETE SCORES FROM LOCAL STORAGE
+//------------------------------------
 // ensure the "clear scores" button works
 clear.addEventListener("click", function(){
     localStorage.removeItem("highscores");
